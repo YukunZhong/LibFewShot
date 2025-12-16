@@ -1,0 +1,55 @@
+data_root: ./core/data/miniImageNet--ravi
+image_size: 84
+workers: 16
+dataloader_num: 1
+augment: True
+
+pretrain_path: ./results/DeepEMD_Pretrain-miniImageNet--ravi-resnet12emd-5-1-Jul-06-2024-08-14-06/checkpoints/emb_func_best.pth
+
+backbone:
+  name: resnet12_emd
+  kwargs: ~
+
+classifier:
+  name: DeepEMD
+  num_classes: 64
+  kwargs:
+    mode: meta
+    args:
+      input_size: 640
+      num_classes: 5
+      num_prototypes: 5
+      use_sfc: True
+      emd_iterations: 100
+      pretrain: origin
+      pretrain_dir: ./results/DeepEMD_Pretrain-miniImageNet--ravi-resnet12emd-5-1-Jul-06-2024-08-14-06/checkpoints/model_best.pth
+      norm: center
+      metric: cosine
+      feature_pyramid: 5,2,1
+      way: 5
+      shot: 1
+      query: 16
+      temperature: 12.5
+
+way_num: 5
+shot_num: 1
+query_num: 16
+epoch: 100
+
+optimizer:
+  name: SGD
+  kwargs:
+    lr: 0.0005
+    momentum: 0.9
+    weight_decay: 0.0005
+    nesterov: True
+
+train_episode: 50
+test_episode: 400
+episode_size: 1
+
+lr_scheduler:
+  kwargs:
+    gamma: 0.5
+    step_size: 10
+  name: StepLR

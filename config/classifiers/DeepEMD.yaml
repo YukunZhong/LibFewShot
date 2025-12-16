@@ -1,0 +1,8 @@
+classifier:
+  name: DeepEMD
+  kwargs:
+    use_sfc: True
+    emd_iterations: 100
+    input_size: 640
+    num_classes: 64
+    num_prototypes: 5
